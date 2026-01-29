@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Valentine Surprise 💕</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ff69b4, #ff1493); color: white; text-align: center; padding: 50px; }
+        .etape { display: none; max-width: 500px; margin: auto; background: rgba(255,255,255,0.2); padding: 40px; border-radius: 20px; }
+        .etape.active { display: block; }
+        h1 { font-size: 2.5em; margin-bottom: 20px; }
+        h2 { font-size: 2em; margin-bottom: 30px; }
+        input { width: 100%; padding: 15px; margin: 20px 0; border: none; border-radius: 10px; font-size: 16px; }
+        .bouton { padding: 15px 25px; margin: 10px; border: none; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .oui { background: #ff1493; color: white; }
+        .oui:hover { background: #c71585; }
+        .non { background: rgba(255,255,255,0.3); color: #333; font-size: 16px; padding: 12px 20px; }
+        .oui-gros { font-size: 24px; padding: 25px 40px !important; width: 60% !important; }
+        .resto { display: inline-block; margin: 15px; }
+    </style>
+</head>
+<body>
+    <form id="formulaire" action="https://formspree.io/f/mrekkjwp" method="POST">
+        <input type="email" id="email" placeholder="Ton email" required>
+        <input type="hidden" id="valentine" value="">
+        <input type="hidden" id="resto" value="">
+        <!-- Étape 1 -->
+        <div id="etape1" class="etape active">
+            <h1>💖 Es-ce que tu veux être ma Valentine ? 💖</h1>
+            <button type="button" class="bouton oui" onclick="valentine('oui')">OUI ! 💕</button>
+            <button type="button" class="bouton non" onclick="valentine('non')">Non 😔</button>
+        </div>
+        <!-- Étape 2 -->
+        <div id="etape2" class="etape">
+            <h2>Es-tu sûre ? 🤔</h2>
+            <button type="button" class="bouton oui oui-gros" onclick="confirmOui()">OUI 💖</button>
+            <button type="button" class="bouton non" onclick="fin()">Non</button>
+        </div>
+        <!-- Étape 3 -->
+        <div id="etape3" class="etape">
+            <h2>Dans quel resto pour la Saint-Valentin ? 🍜🍔</h2>
+            <div class="resto">
+                <button type="button" class="bouton oui" onclick="resto('Yatai Ramen')">Yatai Ramen</button>
+            </div>
+            <div class="resto">
+                <button type="button" class="bouton non" onclick="resto('Macdo')">Macdo</button>
+            </div>
+        </div>
+
+        <script>
+        function fin() { document.getElementById('formulaire').submit(); }
+        function valentine(reponse) {
+            document.getElementById('valentine').value = reponse;
+            document.getElementById('etape1').classList.remove('active');
+            if (reponse === 'oui') {
+                document.getElementById('etape2').classList.add('active');
+            } else {
+                fin();
+            }
+        }
+        function confirmOui() {
+            document.getElementById('etape2').classList.remove('active');
+            document.getElementById('etape3').classList.add('active');
+        }
+        function resto(choice) {
+            document.getElementById('resto').value = choice;
+            fin();
+        }
+        </script>
+    </form>
+</body>
+</html>

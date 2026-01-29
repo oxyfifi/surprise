@@ -1,72 +1,152 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma Valentine Surprise 💕</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ff69b4, #ff1493); color: white; text-align: center; padding: 50px; }
-        .etape { display: none; max-width: 500px; margin: auto; background: rgba(255,255,255,0.2); padding: 40px; border-radius: 20px; }
-        .etape.active { display: block; }
-        h1 { font-size: 2.5em; margin-bottom: 20px; }
-        h2 { font-size: 2em; margin-bottom: 30px; }
-        input { width: 100%; padding: 15px; margin: 20px 0; border: none; border-radius: 10px; font-size: 16px; }
-        .bouton { padding: 15px 25px; margin: 10px; border: none; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .oui { background: #ff1493; color: white; }
-        .oui:hover { background: #c71585; }
-        .non { background: rgba(255,255,255,0.3); color: #333; font-size: 16px; padding: 12px 20px; }
-        .oui-gros { font-size: 24px; padding: 25px 40px !important; width: 60% !important; }
-        .resto { display: inline-block; margin: 15px; }
-    </style>
-</head>
-<body>
-    <form id="formulaire" action="https://formspree.io/f/mrekkjwp" method="POST">
-        <input type="email" id="email" placeholder="Ton email" required>
-        <input type="hidden" id="valentine" value="">
-        <input type="hidden" id="resto" value="">
-        <!-- Étape 1 -->
-        <div id="etape1" class="etape active">
-            <h1>💖 Es-ce que tu veux être ma Valentine ? 💖</h1>
-            <button type="button" class="bouton oui" onclick="valentine('oui')">OUI ! 💕</button>
-            <button type="button" class="bouton non" onclick="valentine('non')">Non 😔</button>
-        </div>
-        <!-- Étape 2 -->
-        <div id="etape2" class="etape">
-            <h2>Es-tu sûre ? 🤔</h2>
-            <button type="button" class="bouton oui oui-gros" onclick="confirmOui()">OUI 💖</button>
-            <button type="button" class="bouton non" onclick="fin()">Non</button>
-        </div>
-        <!-- Étape 3 -->
-        <div id="etape3" class="etape">
-            <h2>Dans quel resto pour la Saint-Valentin ? 🍜🍔</h2>
-            <div class="resto">
-                <button type="button" class="bouton oui" onclick="resto('Yatai Ramen')">Yatai Ramen</button>
-            </div>
-            <div class="resto">
-                <button type="button" class="bouton non" onclick="resto('Macdo')">Macdo</button>
-            </div>
-        </div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ma Valentine Surprise 💕</title>
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ff69b4, #ff1493);
+      color: white;
+      text-align: center;
+      padding: 50px;
+      margin: 0;
+    }
+    .card{
+      max-width: 520px;
+      margin: 30px auto;
+      background: rgba(255,255,255,0.18);
+      padding: 35px;
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .etape{ display: none; }
+    .etape.active{ display: block; }
 
-        <script>
-        function fin() { document.getElementById('formulaire').submit(); }
-        function valentine(reponse) {
-            document.getElementById('valentine').value = reponse;
-            document.getElementById('etape1').classList.remove('active');
-            if (reponse === 'oui') {
-                document.getElementById('etape2').classList.add('active');
-            } else {
-                fin();
-            }
-        }
-        function confirmOui() {
-            document.getElementById('etape2').classList.remove('active');
-            document.getElementById('etape3').classList.add('active');
-        }
-        function resto(choice) {
-            document.getElementById('resto').value = choice;
-            fin();
-        }
-        </script>
+    h1{ font-size: 2.2em; margin: 0 0 15px; }
+    h2{ font-size: 1.8em; margin: 0 0 20px; }
+
+    .subtitle{ opacity: 0.95; margin: 0 0 18px; }
+
+    .btn{
+      border: none;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 14px 20px;
+      margin: 10px;
+      transition: transform 0.05s ease-in-out, background 0.2s ease-in-out;
+      display: inline-block;
+      min-width: 140px;
+    }
+    .btn:active{ transform: scale(0.98); }
+
+    .btn-oui{ background: #ff1493; color: #fff; }
+    .btn-oui:hover{ background: #c71585; }
+
+    .btn-non{
+      background: rgba(255,255,255,0.35);
+      color: #222;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 12px 18px;
+      min-width: 110px;
+    }
+    .btn-non:hover{ background: rgba(255,255,255,0.55); }
+
+    .btn-oui-gros{
+      font-size: 24px;
+      padding: 22px 26px;
+      min-width: 220px;
+    }
+
+    .choices{ margin-top: 10px; }
+    .foot{ margin-top: 18px; font-size: 13px; opacity: 0.9; }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <form id="formulaire" action="https://formspree.io/f/mrekkjwp" method="POST">
+
+      <!-- Email intégré (elle n'a rien à remplir) -->
+      <input type="hidden" name="email" value="lou.anne.staberei.genty@gmail.com">
+
+      <!-- Réponses -->
+      <input type="hidden" id="valentine" name="valentine" value="">
+      <input type="hidden" id="resto" name="resto" value="">
+
+      <!-- Objet email (Formspree) -->
+      <input type="hidden" id="subject" name="subject" value="Réponse Saint-Valentin 💕">
+
+      <!-- Optionnel: page après envoi (si tu crées merci.html) -->
+      <input type="hidden" name="_next" value="https://valentine.novait.fr/merci.html">
+
+      <div id="etape1" class="etape active">
+        <h1>💖 Es-ce que tu veux être ma Valentine ? 💖</h1>
+        <p class="subtitle">Choisis une réponse…</p>
+        <div class="choices">
+          <button type="button" class="btn btn-oui" onclick="valentineChoice('oui')">OUI ! 💕</button>
+          <button type="button" class="btn btn-non" onclick="valentineChoice('non')">Non 😔</button>
+        </div>
+      </div>
+
+      <div id="etape2" class="etape">
+        <h2>Es-tu sûre ? 🤔</h2>
+        <p class="subtitle">Réfléchis bien…</p>
+        <div class="choices">
+          <button type="button" class="btn btn-oui btn-oui-gros" onclick="confirmOui()">OUI 💖</button>
+          <button type="button" class="btn btn-non" onclick="envoyerDirect('non')">Non</button>
+        </div>
+      </div>
+
+      <div id="etape3" class="etape">
+        <h2>Dans quel restaurant veux-tu manger pour la Saint-Valentin ?</h2>
+        <div class="choices">
+          <button type="button" class="btn btn-oui" onclick="choixResto('Yatai Ramen')">Yatai Ramen 🍜</button>
+          <button type="button" class="btn btn-non" onclick="choixResto('Macdo')">Macdo 🍔</button>
+        </div>
+        <div class="foot">Ça envoie ta réponse et je reçois un email.</div>
+      </div>
+
     </form>
+  </div>
+
+  <script>
+  function show(id){
+    document.getElementById('etape1').classList.remove('active');
+    document.getElementById('etape2').classList.remove('active');
+    document.getElementById('etape3').classList.remove('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  function setSubject(){
+    const v = document.getElementById('valentine').value || '?';
+    const r = document.getElementById('resto').value || '(pas choisi)';
+    document.getElementById('subject').value = `Valentine=${v} | Resto=${r}`;
+  }
+
+  function envoyerDirect(){
+    setSubject();
+    document.getElementById('formulaire').submit();
+  }
+
+  function valentineChoice(rep){
+    document.getElementById('valentine').value = rep;
+    if(rep === 'oui') show('etape2');
+    else envoyerDirect();
+  }
+
+  function confirmOui(){
+    show('etape3');
+  }
+
+  function choixResto(r){
+    document.getElementById('resto').value = r;
+    envoyerDirect();
+  }
+</script>
 </body>
 </html>

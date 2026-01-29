@@ -82,7 +82,7 @@
       <input type="hidden" id="subject" name="subject" value="Réponse Saint-Valentin 💕">
 
       <!-- Optionnel: page après envoi (si tu crées merci.html) -->
-      <input type="hidden" name="_next" value="https://valentine.novait.fr/merci.html">
+        <input type="hidden" name="_next" value="https://valentine.novait.fr/merci.html">
 
       <div id="etape1" class="etape active">
         <h1>💖 Es-ce que tu veux être ma Valentine ? 💖</h1>
@@ -114,7 +114,7 @@
     </form>
   </div>
 
-  <script>
+ <script>
   function show(id){
     document.getElementById('etape1').classList.remove('active');
     document.getElementById('etape2').classList.remove('active');
@@ -128,9 +128,23 @@
     document.getElementById('subject').value = `Valentine=${v} | Resto=${r}`;
   }
 
-  function envoyerDirect(){
+  async function envoyerDirect(){
     setSubject();
-    document.getElementById('formulaire').submit();
+
+    const form = document.getElementById('formulaire');
+    const data = new FormData(form);
+
+    const res = await fetch(form.action, {
+      method: "POST",
+      body: data,
+      headers: { "Accept": "application/json" }
+    });
+
+    if(res.ok){
+      window.location.href = "./merci.html";
+    } else {
+      alert("Erreur d'envoi (Formspree). Réessaie.");
+    }
   }
 
   function valentineChoice(rep){
@@ -139,14 +153,13 @@
     else envoyerDirect();
   }
 
-  function confirmOui(){
-    show('etape3');
-  }
+  function confirmOui(){ show('etape3'); }
 
   function choixResto(r){
     document.getElementById('resto').value = r;
     envoyerDirect();
   }
 </script>
+
 </body>
 </html>
